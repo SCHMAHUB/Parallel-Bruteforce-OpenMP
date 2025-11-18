@@ -154,7 +154,7 @@ Aprox. Velocity: 11911432978.23 attempts/second
         }
 ```
 
-### #pragma omp parallel y pragma omp for schedule(dynamic) nowait
+### #pragma omp parallel y #pragma omp for schedule(dynamic) nowait
 - `#pragma omp for`: Distribuye las iteraciones del bucle entre los hilos
 - `schedule(dynamic)`: Asignación dinámica de trabajo
 - `nowait`: Los hilos NO esperan en una barrera al terminar
