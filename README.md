@@ -134,6 +134,59 @@ Aprox. Velocity: 11911432978.23 attempts/second
 ==============================================
 ```
 
+## Directivas OpenMP Utilizadas
+
+### #pragma omp critical
+- Solo UN hilo puede ejecutar el bloque a la vez
+- Los demás hilos esperan su turno (mutex implícito)
+- Garantiza actualización atómica de password_found y found_password
+
+```c
+//thread-safe with critical clausule
+        if (strcmp(current, target) == 0) {
+            #pragma omp critical
+            {
+                if (!password_found) {
+                    password_found = 1;
+                    strcpy(found_password, current);
+                }
+            }
+        }
+```
+
+### #pragma omp parallel y pragma omp for schedule(dynamic) nowait
+- `#pragma omp for`: Distribuye las iteraciones del bucle entre los hilos
+- `schedule(dynamic)`: Asignación dinámica de trabajo
+- `nowait`: Los hilos NO esperan en una barrera al terminar
+
+```c
+ //parallelize the first tree searching level
+        #pragma omp parallel
+        {
+            char current[MAX_PASSWORD_LENGTH + 1];
+
+            //each thread start with a different character using schedule clausule with nowait
+            #pragma omp for schedule(dynamic) nowait
+            for (int i = 0; i < CHARSET_SIZE; i++) {
+                if (!password_found) {
+                    current[0] = CHARSET[i];
+                    bruteforce_recursive(target, current, 1, len);
+                }
+            }
+        }
+```
+
+### Estrategia de Paralelización
+
+El código paralela SOLO el primer nivel del árbol de búsqueda:
+```
+      ROOT
+      / | \
+    a   b   c   ...  (Nivel 1 - PARALELO)
+   /|\  /|\  /|\
+  a b c a b c a b c  (Nivel 2+ - SECUENCIAL por cada hilo)
+```
+
 ## Análisis de Rendimiento
 
 ### Escalabilidad
