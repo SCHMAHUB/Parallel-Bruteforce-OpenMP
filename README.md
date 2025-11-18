@@ -1,4 +1,7 @@
 # Bruteforce Paralelizado con OpenMP
+![Version](https://img.shields.io/badge/version-1.0-blue.svg)
+![Language](https://img.shields.io/badge/language-C-green.svg)
+![OpenMP](https://img.shields.io/badge/parallel-OpenMP-orange.svg)
 
 Proyecto que demuestra el uso de OpenMP para paralelizar un algoritmo de fuerza bruta para descifrar contraseñas con rapidos intentos de combinaciones.
 
